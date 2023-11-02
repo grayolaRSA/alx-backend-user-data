@@ -6,8 +6,7 @@ import re
 import logging
 
 
-def filter_datum(fields: list, redaction: str, message: str,
-                 separator: str) -> str:
+def filter_datum(fields: list, redaction, message, separator: str) -> str:
     """function to filter data"""
     return re.sub(fr'({"|".join(fields)})=[^{separator}]+',
                   f'\\1={redaction}', message)
