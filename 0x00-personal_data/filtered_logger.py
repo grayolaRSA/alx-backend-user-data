@@ -4,14 +4,16 @@
 
 import re
 import logging
+from typing import Tuple, List
 
 
-def filter_datum(fields: list, redaction, message, separator: str) -> str:
+PII_FIELDS = ("email", "phone", "ssn", "password", "ip")
+
+
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
     """function to filter data"""
     pattern = r'(' + '|'.join(fields) + r')=[^' + separator + ']+'
     return re.sub(pattern, r'\1=' + redaction, message)
-    # return re.sub(fr'({"|".join(fields)})=[^{separator}]+', f'\\1={redaction}',
-                #   message)
 
 
 class RedactingFormatter(logging.Formatter):
@@ -33,3 +35,15 @@ class RedactingFormatter(logging.Formatter):
                                           self.REDACTION,
                                           log_message, self.SEPARATOR)
         return log_message_output
+
+    def get_logger(self):
+        """function to return logger object"""
+
+        logger = logging.getLogger("user_data")
+        logger.setLevel(logging.INFO)
+
+        formatter = logging.Formatter(RedactingFormatter)
+
+        stream_handler = logging.StreamHandler()
+
+        return logging.Logger
