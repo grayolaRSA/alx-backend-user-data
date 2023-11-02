@@ -37,12 +37,14 @@ class RedactingFormatter(logging.Formatter):
                             log_message, self.SEPARATOR)
 
 
-def get_logger():
+def get_logger() -> logging.Logger:
     """function to return logger object"""
-
+    
     logger = logging.getLogger("user_data")
 
     logger.setLevel(logging.INFO)
+
+    logger.propagate = False
 
     formatter = RedactingFormatter(PII_FIELDS)
 
