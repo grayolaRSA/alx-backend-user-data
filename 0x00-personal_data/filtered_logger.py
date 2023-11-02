@@ -81,3 +81,22 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         # Handle connection errors
         print(f"Error: {err}")
         return None  # Return None to indicate an error
+
+
+if __name__ == "__main__":
+    """function to run the entire module"""
+    connection = get_db()
+
+    cursor = connection.cursor()
+
+    query = "SELECT * FROM users"
+
+    cursor.execute(query)
+
+    rows = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    for row in rows:
+        get_logger()
