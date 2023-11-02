@@ -39,7 +39,7 @@ class RedactingFormatter(logging.Formatter):
 
 def get_logger() -> logging.Logger:
     """function to return logger object"""
-    
+
     logger = logging.getLogger("user_data")
 
     logger.setLevel(logging.INFO)
