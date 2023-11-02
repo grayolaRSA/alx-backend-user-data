@@ -8,8 +8,10 @@ import logging
 
 def filter_datum(fields: list, redaction, message, separator: str) -> str:
     """function to filter data"""
-    return re.sub(fr'({"|".join(fields)})=[^{separator}]+',
-                  f'\\1={redaction}', message)
+    pattern = r'(' + '|'.join(fields) + r')=[^' + separator + ']+'
+    return re.sub(pattern, r'\1=' + redaction, message)
+    # return re.sub(fr'({"|".join(fields)})=[^{separator}]+', f'\\1={redaction}',
+                #   message)
 
 
 class RedactingFormatter(logging.Formatter):
