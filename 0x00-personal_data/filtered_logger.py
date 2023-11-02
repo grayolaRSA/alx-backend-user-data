@@ -6,6 +6,8 @@ import re
 import logging
 from logging import StreamHandler
 from typing import Tuple, List
+import os
+import mysql.connector
 
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -55,3 +57,24 @@ def get_logger() -> logging.Logger:
     logger.addHandler(stream_handler)
 
     return logger
+
+
+def get_db(db_host="localhost", db_user="root", db_password="", db_name=""):
+    """a function to establish a mysql connection to a database"""
+    db_host = os.environ.get("PERSONAL_DATA_DB_HOST")
+    db_user = os.environ.get("PERSONAL_DATA_DB_USERNAME")
+    db_password = os.environ.get("PERSONAL_DATA_DB_PASSWORD")
+    db_name = os.environ.get("PERSONAL_DATA_DB_NAME")
+
+    try:
+        connection = mysql.connector.connect(
+            host=db_host,
+            user=db_user,
+            password=db_password,
+            database=db_name
+        )
+        return connection  # Return the MySQLConnection object
+    except mysql.connector.Error as err:
+        # Handle connection errors
+        print(f"Error: {err}")
+        return None  # Return None to indicate an error
