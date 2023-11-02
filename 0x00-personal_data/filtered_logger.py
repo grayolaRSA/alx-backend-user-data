@@ -4,6 +4,7 @@
 
 import re
 import logging
+from logging import StreamHandler
 from typing import Tuple, List
 
 
@@ -35,14 +36,20 @@ class RedactingFormatter(logging.Formatter):
         return filter_datum(self.fields_to_redact, self.REDACTION,
                             log_message, self.SEPARATOR)
 
-    def get_logger(self):
-        """function to return logger object"""
 
-        logger = logging.getLogger("user_data")
-        logger.setLevel(logging.INFO)
+def get_logger():
+    """function to return logger object"""
 
-        formatter = logging.Formatter(RedactingFormatter)
+    logger = logging.getLogger("user_data")
 
-        stream_handler = logging.StreamHandler()
+    logger.setLevel(logging.INFO)
 
-        return logging.Logger
+    formatter = RedactingFormatter(PII_FIELDS)
+
+    stream_handler = logging.StreamHandler()
+
+    stream_handler.setFormatter(formatter)
+
+    logger.addHandler(stream_handler)
+
+    return logger
