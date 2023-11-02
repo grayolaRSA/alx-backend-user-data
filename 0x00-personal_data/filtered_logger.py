@@ -59,7 +59,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db():
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """a function to establish a mysql connection to a database"""
     db_host = os.environ.get("PERSONAL_DATA_DB_HOST", "localhost")
     db_user = os.environ.get("PERSONAL_DATA_DB_USERNAME", "root")
