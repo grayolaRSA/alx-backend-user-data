@@ -59,11 +59,11 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db(db_host="localhost", db_user="root", db_password="", db_name=""):
+def get_db():
     """a function to establish a mysql connection to a database"""
-    db_host = os.environ.get("PERSONAL_DATA_DB_HOST")
-    db_user = os.environ.get("PERSONAL_DATA_DB_USERNAME")
-    db_password = os.environ.get("PERSONAL_DATA_DB_PASSWORD")
+    db_host = os.environ.get("PERSONAL_DATA_DB_HOST", "localhost")
+    db_user = os.environ.get("PERSONAL_DATA_DB_USERNAME", "root")
+    db_password = os.environ.get("PERSONAL_DATA_DB_PASSWORD", "")
     db_name = os.environ.get("PERSONAL_DATA_DB_NAME")
 
     try:
