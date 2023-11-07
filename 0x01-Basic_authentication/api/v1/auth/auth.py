@@ -33,9 +33,15 @@ class Auth:
     def authorization_header(self, request=None) -> str:
         """method that returns None when flask request made
         """
-        return None
+        if request is None:
+            return None
+        if 'Authorization' not in request.headers:
+            return None
+        return request.headers
 
     def current_user(self, request=None) -> TypeVar('User'):
         """returns None when flask request made
         """
-        return None
+        if request is None:
+            return None
+        return
