@@ -65,8 +65,8 @@ class BasicAuth(Auth):
         """ method that returns the user based on his/her
         email and password
         """
-        user = User()
-        db_path = user.load_from_file()
+        # user = User()
+        # db_path = user.load_from_file()
 
         if user_email is None or user_pwd is None:
             return None
@@ -74,17 +74,17 @@ class BasicAuth(Auth):
         if not isinstance(user_email, str) or not isinstance(user_pwd, str):
             return None
 
-        users_list = user.search({'_password': user.password})
+        users = User.search({'email': user_email})
         # print(users_list)
 
-        if not users_list:
+        if not users or users == []:
             return None
 
-        for user_list in users_list:
-            if user_list is user:
-                if user.email == user_email and \
-                        user.is_valid_password(user_pwd):
-                    return user_list
+        for user in users:
+            # if user_list is user:
+            #     if user.email == user_email and \
+            if user.is_valid_password(user_pwd):
+                return user
 
         return None
 
