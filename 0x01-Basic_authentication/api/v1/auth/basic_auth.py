@@ -80,10 +80,9 @@ class BasicAuth(Auth):
         if not users or users == []:
             return None
 
-        for user in users:
-            # if user_list is user:
-            #     if user.email == user_email and \
-            if user.is_valid_password(user_pwd):
-                return user
-
-        return None
+        try:
+            for user in users:
+                if user.is_valid_password(user_pwd):
+                    return user
+        except Exception:
+            return None
