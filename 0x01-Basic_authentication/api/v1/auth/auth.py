@@ -42,6 +42,6 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """returns None when flask request made
         """
-        # if request is None:
-        #     return None
+        if request is None:
+            return None
         return None
