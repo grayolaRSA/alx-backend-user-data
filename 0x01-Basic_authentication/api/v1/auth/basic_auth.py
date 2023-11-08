@@ -2,11 +2,10 @@
 """module for Basic Auth"""
 
 
-from api.v1.auth.auth import Auth
+from .auth import Auth
 import base64
 from typing import TypeVar
 from models.user import User
-from models.base import Base
 
 
 class BasicAuth(Auth):
@@ -91,17 +90,18 @@ class BasicAuth(Auth):
         """
         Returns a User instance based on a received request
         """
-        if request is None:
-            return None
+        user = User()
 
-        Auth_header = self.authorization_header(request)
-        if Auth_header is not None:
-            token = self.extract_base64_authorization_header(Auth_header)
-            if token is not None:
-                decoded = self.decode_base64_authorization_header(token)
-                if decoded is not None:
-                    email, pword = self.extract_user_credentials(decoded)
-                    if email is not None and pword is not None:
-                        user_instance = self.user_object_from_credentials(
-                            email, pword)
-                        return user_instance
+        if request is not None:
+            Auth_header = self.authorization_header(request)
+            if Auth_header is not None:
+                token = self.extract_base64_authorization_header(Auth_header)
+                if token is not None:
+                    decoded = self.decode_base64_authorization_header(token)
+                    if decoded is not None:
+                        email, pword = self.extract_user_credentials(decoded)
+                        if email is not None:
+                            user_instance = self.user_object_from_credentials(
+                                email, pword)
+                            return user_instance
+        return None
