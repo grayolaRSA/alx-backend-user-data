@@ -10,9 +10,7 @@ from typing import List, TypeVar
 class Auth:
     """Basic Authorization class
     """
-    def __init__(self):
-        self.session_name = getenv('SESSION_NAME', '_my_session_id')
-    
+
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """method that returns False
         """
@@ -45,8 +43,8 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """returns None when flask request made
         """
-        if request is None:
-            return None
+        # if request is None:
+        #     return None
         return None
 
     def session_cookie(self, request=None):
@@ -55,4 +53,5 @@ class Auth:
         """
         if request is None:
             return None
-        return request.cookies.get(self.session_name)
+        session_name = getenv('SESSION_NAME', '_my_session_id')
+        return request.cookies.get(session_name)
