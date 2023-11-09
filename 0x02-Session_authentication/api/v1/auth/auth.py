@@ -10,7 +10,9 @@ from typing import List, TypeVar
 class Auth:
     """Basic Authorization class
     """
-
+    def __init__(self):
+        self.session_name = getenv('SESSION_NAME', '_my_session_id')
+    
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """method that returns False
         """
@@ -53,5 +55,4 @@ class Auth:
         """
         if request is None:
             return None
-        session_name = getenv('SESSION_NAME')
-        return request.cookies.get(session_name)
+        return request.cookies.get(self.session_name)

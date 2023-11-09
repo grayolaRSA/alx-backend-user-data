@@ -6,6 +6,7 @@ from flask import request
 from .auth import Auth
 import uuid
 from typing import Dict
+from models.user import User
 
 
 class SessionAuth(Auth):
@@ -33,3 +34,12 @@ class SessionAuth(Auth):
         # user_id_by_session_id = {}
         # for session_id, v in user_id_by_session_id:
         return self.user_id_by_session_id.get(session_id)
+
+    def current_user(self, request=None):
+        """
+        returns user instance based on a cookie value
+        """
+        session_cookie = self.session_cookie(request)
+        user_id = self.user_id_by_session_id(session_cookie)
+        user = User.get(user_id)
+        return user
