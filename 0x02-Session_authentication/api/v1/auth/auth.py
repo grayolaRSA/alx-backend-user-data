@@ -46,7 +46,7 @@ class Auth:
         if request is None:
             return None
         return None
-    
+
     def session_cookie(self, request=None):
         """
         method that generates a session cookie from a request
