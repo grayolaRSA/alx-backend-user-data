@@ -28,6 +28,9 @@ class Auth:
 
             if expected_path.startswith(normalized_excluded):
                 return False
+            if normalized_excluded.endswith('*')\
+               and expected_path.startswith(normalized_excluded):
+                return False
 
         return True
 
