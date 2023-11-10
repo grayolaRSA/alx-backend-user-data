@@ -23,7 +23,7 @@ class Auth:
 
         for excluded_path in excluded_paths:
             normalized_excluded = excluded_path if excluded_path.endswith('/')\
-                 else excluded_path
+                 else excluded_path if excluded_path.endswith('*')
 
             if expected_path.startswith(normalized_excluded):
                 return False
