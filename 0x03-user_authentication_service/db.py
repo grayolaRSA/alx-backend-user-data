@@ -9,7 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import NoResultFound, InvalidRequestError
-from typing import Union, Callable, List
+from typing import Union, Callable, List, Dict
 
 
 from user import Base
@@ -48,7 +48,8 @@ class DB:
 
         return new_user
 
-    def find_user_by(self, **kwargs) -> User:
+    def find_user_by(self, **kwargs: Dict[Union[str, int],
+                                          Union[str, int]]) -> User:
         """
         method to find user based on key-value argument
         """
@@ -62,3 +63,19 @@ class DB:
                 if found_user is None:
                     raise NoResultFound
                 return found_user
+
+    def update_user(self, user_id: int, **kwargs:
+                    Dict[Union[str, int], Union[str, int]]) -> None:
+        """
+        method that updates user details in the database
+        """
+        found_user = self.find_user_by(id=user_id)
+
+        if kwargs:
+            for key, value in kwargs.items():
+                if not hasattr(User, key):
+                    raise ValueError
+
+        setattr(found_user, key, value)
+
+        self._session.commit()
