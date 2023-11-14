@@ -19,7 +19,7 @@ def hello_world() -> Dict:
 
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
-def users() -> Dict:
+def users(email: str, password: str) -> Dict:
     """function for registering a user"""
     email = request.form.get("email")
     password = request.form.get("password")
