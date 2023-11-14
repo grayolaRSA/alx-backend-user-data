@@ -7,6 +7,7 @@ from bcrypt import hashpw
 from db import DB
 from user import User
 from sqlalchemy.exc import NoResultFound, InvalidRequestError
+import uuid
 
 
 def _hash_password(password: str) -> bytes:
@@ -49,3 +50,9 @@ class Auth:
                                       user.hashed_password)
         except NoResultFound:
             return False
+
+    def _generate_uuid() -> str:
+        """"
+        generates new uuid to be used in Auth
+        """
+        return str(uuid.uuid4())
