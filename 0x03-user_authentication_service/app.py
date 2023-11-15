@@ -3,7 +3,7 @@
 
 
 from os import getenv
-from flask import Flask, jsonify, request, abort, make_response
+from flask import Flask, jsonify, request, abort, make_response, redirect
 from typing import Dict
 from auth import Auth
 from sqlalchemy.orm.session import Session
@@ -46,6 +46,17 @@ def login() -> Session:
         return response
 
     abort(401)
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> None:
+    """ function for logging out user and redirecting to home page"""
+    cookie = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(cookie)
+    if user:
+        AUTH.destroy_session(user.id)
+        return redirect('/')
+    abort(403)
 
 
 if __name__ == "__main__":

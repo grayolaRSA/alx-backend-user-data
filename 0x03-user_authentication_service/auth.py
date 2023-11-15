@@ -8,6 +8,7 @@ from db import DB
 from user import User
 from sqlalchemy.exc import NoResultFound, InvalidRequestError
 import uuid
+from typing import Union
 
 
 def _hash_password(password: str) -> bytes:
@@ -69,3 +70,24 @@ class Auth:
                 return session_id
         except NoResultFound:
             return None
+
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
+        """
+        method that gets the user that corresponds with a session id
+        """
+        try:
+            self._db.find_user_by(session_id=session_id)
+        except ValueError:
+            return None
+
+    def destroy_session(self, user_id: int) -> None:
+        """
+        method to destroy the session by removing the session id
+        """
+        try:
+            user = self._db.find_user_by(user_id=user_id)
+            user.session_id = None
+            return None
+        except NoResultFound:
+            return ValueError('no related user ID found')
+
