@@ -3,7 +3,8 @@
 
 
 from os import getenv
-from flask import Flask, jsonify, request, abort, make_response, redirect
+from flask import Flask, jsonify, request, abort, make_response, redirect, \
+    url_for
 from typing import Dict
 from auth import Auth
 from sqlalchemy.orm.session import Session
@@ -51,12 +52,26 @@ def login() -> Session:
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> None:
     """ function for logging out user and redirecting to home page"""
-    cookie = request.cookies.get('session_id')
-    user = AUTH.get_user_from_session_id(cookie)
+    session_id = request.cookies.get("session_id")
+    user = AUTH.get_user_from_session_id(session_id)
     if user:
         AUTH.destroy_session(user.id)
-        return redirect('/')
+        return redirect(url_for('hello_world'))
     abort(403)
+
+
+@app.route('/profile', methods=['GET'], strict_slashes=False)
+def profile() -> Dict:
+    """method to retrieve a user email according to
+     session ID cookie"""
+    session_id = request.cookies.get("session_id")
+    try:
+        user = AUTH.get_user_from_session_id(session_id)
+
+        if user:
+            return jsonify({"email": user.email}), 200
+    except NoResultFound:
+        abort(403)
 
 
 if __name__ == "__main__":

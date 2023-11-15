@@ -76,7 +76,7 @@ class Auth:
         method that gets the user that corresponds with a session id
         """
         try:
-            self._db.find_user_by(session_id=session_id)
+            return self._db.find_user_by(session_id=session_id)
         except ValueError:
             return None
 
@@ -87,7 +87,6 @@ class Auth:
         try:
             user = self._db.find_user_by(user_id=user_id)
             user.session_id = None
-            return None
+            self._db._session.commit()
         except NoResultFound:
             return ValueError('no related user ID found')
-
