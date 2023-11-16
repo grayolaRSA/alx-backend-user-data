@@ -82,13 +82,13 @@ def get_reset_token() -> Dict:
 
     try:
         user = AUTH._db.find_user_by(email=email)
-        if user.email == email:
-            reset_token = AUTH.get_reset_password_token(email)
-            return jsonify({"email": user.email, "reset_token": reset_token})
-        abort(403)
+        reset_token = AUTH.get_reset_password_token(email)
+        
 
-    except NoResultFound:
+    except ValueError:
         abort(403)
+    
+    return jsonify({"email": user.email, "reset_token": reset_token}), 200
 
 
 @app.route('/reset_password', methods=['PUT'], strict_slashes=False)

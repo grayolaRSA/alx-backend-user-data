@@ -85,7 +85,7 @@ class Auth:
         method to destroy the session by removing the session id
         """
         try:
-            user = self._db.find_user_by(user_id=user_id)
+            user = self._db.find_user_by(id=user_id)
             user.session_id = None
             self._db._session.commit()
         except NoResultFound:
@@ -99,10 +99,11 @@ class Auth:
             user = self._db.find_user_by(email=email)
             reset_token = self._generate_uuid()
             self._db.update_user(user.id, reset_token=reset_token)
-            return reset_token
 
         except NoResultFound:
             raise ValueError
+
+        return reset_token
 
     def update_password(self, reset_token: str, password: str) -> None:
         """
