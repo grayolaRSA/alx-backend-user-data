@@ -40,6 +40,11 @@ class DB:
     def add_user(self, email: str, hashed_password: str) -> User:
         """
         method to add new user to database
+        Args:
+            email (str): user's email address
+            hashed_password (str): password hashed by bcrypt's hashpw
+        Return:
+            Newly created User object
         """
         user = User(email=email, hashed_password=hashed_password)
 
